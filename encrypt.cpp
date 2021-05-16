@@ -27,5 +27,9 @@ int main() {
    /// }
 
     num4 = lowLevelPrime();
+
+    for (int i = 0; i < num4.length(); i++) {
+      cout << num4[i];
+    }
    /// cout << num4;
 }

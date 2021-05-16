@@ -81,21 +81,45 @@ int mod(string num, int modby) {
     return result;
 }
 
-string lowLevelPrime() {
+bool isLess(string num1, string num2) {
 
-    vector<int> firstPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349};
+    if (num1.length() < num2.length()) {
+        return true;
+    } else if (num2.length() < num1.length()) {
+        return false;
+    }
 
-    string possiblePrime = genNum();
-
-    cout << possiblePrime << "boi" << endl;
-
-    for (int i = 0; i < firstPrimes.size(); i++) {
-        if (mod(possiblePrime, i) == 0 && (pow(i,2) < possiblePrime || pow(i,2) == possiblePrime)) {
-            break;
-        } else {
-            return possiblePrime;
+    for (int i = 0; i < num1.length(); i++) {
+        if ((int)num1[i] - '0' < (int)num2[i] - '0') {
+            return true;
+        } else if ((int)num1[i] - '0' > (int)num2[i] - '0') {
+            return false;
         }
     }
 
-    return;
+    return true; 
+}
+
+string lowLevelPrime() {
+
+    bool isPass = false;
+
+    vector<int> firstPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349};
+
+    while (isPass == false) {
+
+        string possiblePrime = genNum();
+
+        ///cout << possiblePrime << "boi" << endl;
+
+        for (int i = 0; i < firstPrimes.size(); i++) {
+            if (mod(possiblePrime, firstPrimes[i]) == 0 && isLess(to_string(pow(firstPrimes[i],2)), possiblePrime)) {
+                cout << "meh";
+                break;
+            } else {
+                cout << "trues";
+                return possiblePrime;
+            }
+        }
+    }
 }
