@@ -12,7 +12,7 @@ string genNum();
 int mod(string num, int modby);
 bool isLess(string num1, string num2);
 string lowLevelPrime();
-
+bool MilerRabinTest(string num);
 
 
 

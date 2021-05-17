@@ -123,3 +123,17 @@ string lowLevelPrime() {
         }
     }
 }
+
+bool MilerRabinTest(string num) {
+
+    int maxByTwo = 0;
+
+    string evenPrime = num;
+
+    evenPrime[evenPrime.length() - 1] = evenPrime[evenPrime.length() - 1] - 1;
+
+    while (mod(evenPrime,2) == 0) {
+        evenPrime = multiply(evenPrime, to_string(1/2));
+    }
+
+}

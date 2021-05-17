@@ -10,16 +10,17 @@ using namespace std;
 
 int main() {
 
-    string num = "26739479328473897112825471612627166544616581503123456";
-    int modby = 5;
+    int boi = 102;
+    string bois = "102";
+    vector<int> bruh;
 
-    int result = 0;
+    boi >>= 1;
 
-    for (int i = 0; i < num.length(); i++) {
-        result = (result*10 + (int)num[i] - '0') % modby;
+    bruh = multiply(bois, to_string(4));
+    
+    cout << boi;
+    for (int i = 0; i < bruh.size(); i++) {
+        cout << bruh[i];
     }
-
-    cout << result;
-
 }
         
