@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <assert.h>  
 
 using namespace std;
 
@@ -133,7 +134,33 @@ bool MilerRabinTest(string num) {
     evenPrime[evenPrime.length() - 1] = evenPrime[evenPrime.length() - 1] - 1;
 
     while (mod(evenPrime,2) == 0) {
-        evenPrime = multiply(evenPrime, to_string(1/2));
+        evenPrime = vectorToString(multiply(evenPrime, to_string(1/2)));
+        maxByTwo++;
     }
 
+    string evenPrime2 = evenPrime;
+
+    evenPrime2[evenPrime2.length() - 1] = evenPrime2[evenPrime2.length() - 1] - 1;
+
+    assert(vectorToString(multiply(to_string(pow(2, maxByTwo)), evenPrime)) == evenPrime2);
+
+}
+
+string vectorToString(vector<int> num) {
+    string converted;
+
+    for (int i = 0; i < num.size(); i++) {
+        converted.append(to_string(num[i]));
+    }
+
+    return converted;
+}
+
+bool trial(string tester) {
+
+}
+
+string toPower(string num1, string num2) {
+    string result;
+    
 }

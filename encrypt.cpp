@@ -5,6 +5,7 @@
 #include <algorithm>
 #include<string.h>
 #include "functions.h"
+#include <assert.h>  
 
 using namespace std;
 
