@@ -17,6 +17,7 @@ bool MilerRabinTest(string num);
 string vectorToString(vector<int> num);
 bool trial(string tester);
 string toPower(string num1, string num2);
-
+string simpleSubtract(string num);
+string simpleAdd(string num);
 
 

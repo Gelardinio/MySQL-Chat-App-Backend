@@ -131,7 +131,7 @@ bool MilerRabinTest(string num) {
 
     string evenPrime = num;
 
-    evenPrime[evenPrime.length() - 1] = evenPrime[evenPrime.length() - 1] - 1;
+    evenPrime = simpleSubtract(evenPrime);
 
     while (mod(evenPrime,2) == 0) {
         evenPrime = vectorToString(multiply(evenPrime, to_string(1/2)));
@@ -140,7 +140,7 @@ bool MilerRabinTest(string num) {
 
     string evenPrime2 = evenPrime;
 
-    evenPrime2[evenPrime2.length() - 1] = evenPrime2[evenPrime2.length() - 1] - 1;
+    evenPrime2 = simpleSubtract(evenPrime2);
 
     assert(vectorToString(multiply(to_string(pow(2, maxByTwo)), evenPrime)) == evenPrime2);
 
@@ -161,6 +161,29 @@ bool trial(string tester) {
 }
 
 string toPower(string num1, string num2) {
-    string result;
+    string result = num1;
+    string counter = "0"; 
+    string subtracted = simpleSubtract(num2);
+
+    //For int i = 0; i < num2 - 1; i++
+    //While i < subtracted
+    // result = result * num1
+    //i++;
     
+}
+
+string simpleAdd(string num) {
+    if (num[num.length() - 1] != 9) {
+        num[num.length() - 1] = num[num.length() - 1] + 1
+    }
+}
+
+string simpleSubtract(string num) {
+    if (num[num.length() - 1] != 0) {
+        num[num.length() - 1] = num[num.length() - 1] - 1;
+    } else {
+        num.pop_back();
+        num[num.length() - 1] = num[num.length() - 1] - 1;
+    }
+    return num;
 }
