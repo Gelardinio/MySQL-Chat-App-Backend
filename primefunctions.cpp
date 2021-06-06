@@ -146,9 +146,6 @@ bool MilerRabinTest(string num) {
 
 }
 
-
-
-
 string vectorToString(vector<int> num) {
     string converted;
 
@@ -160,7 +157,7 @@ string vectorToString(vector<int> num) {
 }
 
 bool trial(string tester) {
-
+    
 }
 
 string toPower(string num1, string num2) {
@@ -168,11 +165,10 @@ string toPower(string num1, string num2) {
     string counter = "0"; 
     ///string subtracted = simpleSubtract(num2);
 
-    //For int i = 0; i < num2; i++
-    //While i < subtracted
-    // result = result * num1
-    //i++;
-    
+    while (isLess(counter, num2)) {
+        result = vectorToString(multiply(result, num1));
+        counter = simpleAdd(counter);
+    }   
 }
 
 string simpleAdd(string num, int index) {
