@@ -8,24 +8,30 @@
 
 using namespace std;
 
-string simpleSubtract(string num);
+string global;
+
+string simpleAdd(string num, int index);
 
 int main() {
-
-    string boi = "28340239489030";
-    boi = simpleSubtract(boi);
-    ///cout << boi;
+    string boi = "28340239489099";
+    boi = simpleAdd(boi, 1);
+    cout << "boi";
+    cout << global;
 
 }
         
-string simpleSubtract(string num) {
-    if (num[num.length() - 1] != 0) {
-        num[num.length() - 1] = num[num.length() - 1] - 1;
-        ///cout << num << endl;
+string simpleAdd(string num, int index) {
+    /// Where the index is the offset from num.length()
+    if (num[num.length() - index] != '9') {
+        num[num.length() - index] = num[num.length() - index] + 1;
+        string temp = num;
+        cout << endl << temp << endl;
+        global = temp;
+        cout << global << endl;
+        return temp;
     } else {
-        num.pop_back();
-        cout << num << "boi" << endl;
-        ///num[num.length() - 1] = num[num.length() - 1] - 1;
+        num[num.length() - index] = '0';
+        cout << num << endl;
+        simpleAdd(num, index + 1);
     }
-    return num;
 }

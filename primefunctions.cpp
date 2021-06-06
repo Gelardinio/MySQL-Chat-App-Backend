@@ -146,6 +146,9 @@ bool MilerRabinTest(string num) {
 
 }
 
+
+
+
 string vectorToString(vector<int> num) {
     string converted;
 
@@ -163,18 +166,24 @@ bool trial(string tester) {
 string toPower(string num1, string num2) {
     string result = num1;
     string counter = "0"; 
-    string subtracted = simpleSubtract(num2);
+    ///string subtracted = simpleSubtract(num2);
 
-    //For int i = 0; i < num2 - 1; i++
+    //For int i = 0; i < num2; i++
     //While i < subtracted
     // result = result * num1
     //i++;
     
 }
 
-string simpleAdd(string num) {
-    if (num[num.length() - 1] != 9) {
-        num[num.length() - 1] = num[num.length() - 1] + 1
+string simpleAdd(string num, int index) {
+    /// Where the index is the offset from num.length()
+    if (num[num.length() - index] != 9) {
+        num[num.length() - index] = num[num.length() - index] + 1;
+        cout << num;
+        return num;
+    } else {
+        num[num.length() - index] = 0;
+        simpleAdd(num, index + 1);
     }
 }
 
