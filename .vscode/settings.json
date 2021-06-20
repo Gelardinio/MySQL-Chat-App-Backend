@@ -45,6 +45,7 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "chrono": "cpp"
     }
 }
