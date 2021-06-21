@@ -7,6 +7,14 @@
 #include <chrono>
 #include <random>
 #include <assert.h>  
+#include "bignumber.h"
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+#include <assert.h>
+#include <string>
+#include <algorithm>
+
 
 using namespace std;
 
@@ -163,7 +171,7 @@ bool MilerRabinTest(string num) {
         }
         bool trueFalse = true;
         string powerRes = toPower(roundTester, evenPrime);
-        if (stoi(modulus(powerRes, num)) == 1) {
+        if (stoi(moduluser(powerRes, num)) == 1) {
             trueFalse = false;
         }
         if (trueFalse == true) {
@@ -171,10 +179,16 @@ bool MilerRabinTest(string num) {
             while(isLess(counter, to_string(maxByTwo))) {
                 string twoiec = vectorToString(multiply(toPower(to_string(2), counter), evenPrime2));
                 string resultOfPow = toPower(roundTester, twoiec);
-                ///if modulus()
+                if (moduluser(resultOfPow, num) == simpleSubtract(num)) {
+                    trueFalse = false;
+                }
             }
         }
+        if (trueFalse == true) {
+            return false;
+        }
     }
+    return true;
 
 }
 
@@ -197,16 +211,17 @@ string toPower(string num1, string num2) {
     ///num2 = evenComponent
     while (isLess(counter, num2)) {
         result = vectorToString(multiply(result, num1));
-        counter = simpleAdd(counter);
+        counter = simpleAdd(counter, counter.length() - 1);
     }   
 
     return result;
 }
 
-string modulus(string num1, string num2) {
-    vector<int> result = multiply(num1, num2);
-    int truncate = result[0];
-    vector<int> secondnum = multiply(num2, to_string(truncate));
+string moduluser(string num1, string num2) {
+    string result = BigNumber(num1).divide(BigNumber(num2)).getString();
+    char truncate = result.at(0);
+    string truncate2(1, truncate);
+    vector<int> secondnum = multiply(num2, truncate2);
     string secondnumstr = vectorToString(secondnum);
     string final = findDiff(num1, secondnumstr);
     return final;

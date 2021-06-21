@@ -18,8 +18,8 @@ string vectorToString(vector<int> num);
 bool trial(string tester, string numFromMiller);
 string toPower(string num1, string num2);
 string simpleSubtract(string num);
-string simpleAdd(string num);
-string modulus(string num1, string num2);
+string simpleAdd(string num, int index);
+string moduluser(string num1, string num2);
 bool isSmaller(string str1, string str2);
 string findDiff(string str1, string str2);
 
