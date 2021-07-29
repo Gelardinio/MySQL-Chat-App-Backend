@@ -1,4 +1,4 @@
 curl --request POST \
-  --header 'content-type: application/json' \
-  --url http://localhost:4000/ \
-  --data '{"query":"mutation {\n  addBook(text: \"Hellos, this is the first message\", author: \"Gerald\") {\n    text\n    author {\n      name\n    }\n  }\n}","variables":"{\r\n}"}'
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"mutation {\n  getMessage(table: \"user3\") {\n    table\n  }\n}","variables":"{\r\n}"}'

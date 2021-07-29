@@ -19,6 +19,10 @@ const typeDefs = gql`
     name: String
   }
 
+  type MessageList {
+    table: String
+  }
+
   type Query {
     messages: [Message]
     authors: [Author]
@@ -26,7 +30,9 @@ const typeDefs = gql`
 
   type Mutation {
     addBook(text: String, author: String): Message
+    getMessage(table: String): MessageList
   }
+
 `;
 
 const resolvers = {
@@ -43,6 +49,13 @@ const resolvers = {
         if (err) throw err;
         console.log("Inserted");
       });
+    },
+
+    getMessage(parent, args, context, info) {
+      con.query(`SELECT * FROM ${args.table}`, function (err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+      });  
     }
   }
 
