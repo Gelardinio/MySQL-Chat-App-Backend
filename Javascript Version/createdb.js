@@ -1,3 +1,5 @@
+var mysql = require('mysql');
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -8,8 +10,7 @@ var con = mysql.createConnection({
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    createMessageTable();
-    createUserTable();
+    printTable("users")
 });
 
 createMessageTable = () => {
@@ -26,4 +27,11 @@ createUserTable = () => {
         if (err) throw err;
         console.log("Table created");        
     });
+}
+
+printTable = table => {
+  con.query(`SELECT * FROM ${table}`, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+  });
 }
