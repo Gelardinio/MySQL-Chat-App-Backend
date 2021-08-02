@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server');
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
 
@@ -109,14 +109,29 @@ const resolvers = {
 
       var hashPass = '';
 
-      con.query(`SELECT * FROM users WHERE email = '${args.email}'`, function (err, result, fields) {
-        if (err) throw err;
-        
-        bcrypt.compare(args.password, result[0].password, (error, res) => {
-          console.log('Compared result', res) 
-        })
+      /*function get_info() {
+        con.query(`SELECT * FROM users WHERE email = '${args.email}'`, function (err, result, fields) {
+          if (err) throw err;
+          
+          bcrypt.compare(args.password, result[0].password, (error, res) => {
+            console.log('Compared result', res) 
+          })
 
-      });
+          return result[0].password
+
+        });
+      }*/
+
+      var theResult = "";
+
+      async function get_info(email) {
+        const results = await con.promise().query(`SELECT * FROM users WHERE email = '${email}'`)
+        return results[0]
+      }
+
+      theResult = await get_info(args.email)
+
+      console.log("THE RESULT" + JSON.stringify(theResult))
 
       function assignValue(email) {
         const token = jwt.sign(
