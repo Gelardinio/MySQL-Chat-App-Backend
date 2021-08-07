@@ -30,20 +30,20 @@ const typeDefs = gql`
   type Query {
     messages: [Message]
     authors: [Author]
-    user: User
+    user: String
   }
 
   type Mutation {
     addBook(text: String, author: String): Message
     getMessage(table: String): MessageList
     register(username: String! email: String!, password: String!): User!
-    login(email: String!, password: String!): User
+    login(email: String!, password: String!): String!
   }
 
   type User {
-    username: String!
-    email: String!
-    password: String!
+    username: String
+    email: String
+    password: String
   }
 
 `;
@@ -53,7 +53,8 @@ const resolvers = {
     messages: () => messages,
     
     user(parent, args, context, info) {
-      return context.user
+      console.log(context.user)
+      return context.user.user
     }
   },
 
@@ -126,25 +127,28 @@ const resolvers = {
 
       async function get_info(email) {
         const results = await con.promise().query(`SELECT * FROM users WHERE email = '${email}'`)
-        return results[0]
+        return results[0][0].password
       }
 
       theResult = await get_info(args.email)
 
-      console.log("THE RESULT" + JSON.stringify(theResult))
+      const isValid = await bcrypt.compare(args.password, theResult);
 
-      function assignValue(email) {
-        const token = jwt.sign(
-          {
-            user: email
-          },
-          SECRET,
-          {expiresIn: "1d" }
-        ); 
-        return token
+      if (!isValid) {
+        throw new Error("Incorrect password");
       }
 
-      token = await assignValue(args.email)
+      console.log(theResult)
+
+      const token = await jwt.sign(
+        {
+          user: args.email
+        },
+        SECRET,
+        {expiresIn: "1h" }
+      ); 
+
+      console.log(token)
 
       return token;
 
@@ -154,28 +158,24 @@ const resolvers = {
 
 };
 
-const server = new ApolloServer({ 
-  typeDefs, 
+const server = new ApolloServer({
+  typeDefs,
   resolvers,
 
-  /*
   context: async ({ req }) => {
     const token = await req.headers["authentication"];
     let user;
     try {
       user = await jwt.verify(token, SECRET);
-      console.log(`${user.user} user`);
     } catch (error) {
       console.log(`${error.message} caught`);
     }
-
+   
     return {
       user,
       SECRET
     };
-
-  }*/
-
+  }
 });
 
 con.connect(function(err) {

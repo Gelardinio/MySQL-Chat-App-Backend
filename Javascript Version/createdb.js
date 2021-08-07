@@ -10,7 +10,7 @@ var con = mysql.createConnection({
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    printTable("users")
+    deleteUserTable();
 });
 
 createMessageTable = () => {
@@ -34,4 +34,12 @@ printTable = table => {
     if (err) throw err;
     console.log(result);
   });
+}
+
+deleteUserTable = () => {
+  var sql = "DELETE FROM users WHERE username='Gerald'";
+  con.query(sql, function(err, results) {
+    if (err) throw err;
+    console.log("Table created");        
+  }); 
 }
