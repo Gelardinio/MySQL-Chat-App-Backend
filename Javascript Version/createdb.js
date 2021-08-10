@@ -1,5 +1,12 @@
 var mysql = require('mysql');
 
+export const conToExport = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "Qawsedrf01!",
+  database: "mydb"
+});
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -27,6 +34,14 @@ createUserTable = () => {
         if (err) throw err;
         console.log("Table created");        
     });
+}
+
+createTableWithUsername = (userName) => {
+  var sql = `CREATE TABLE ${userName}(chatName VARCHAR(255), otherUser VARCHAR(255), creationDate DATETIME)`;
+}
+
+createChatTable = (chatName) => {
+  var sql = `CREATE TABLE ${chatName}(message VARCHAR(8000), sentBy VARCHAR(255), date DATETIME)`;
 }
 
 printTable = table => {

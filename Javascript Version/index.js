@@ -1,9 +1,11 @@
 const { ApolloServer, gql } = require('apollo-server');
+//import { typeDefs } from './schema.js';
+//import { resolvers } from './resolver.js';
+//import { SECRET } from './secret.js';
+//import { conToExport as con} from './createdb.js';
 var mysql = require('mysql2');
 var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
-
-const SECRET = "98ASD908Gjfal93gn398!?44345"
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -34,8 +36,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addBook(text: String, author: String): Message
+    addMessage(text: String, author: String): Message
     getMessage(table: String): MessageList
+    createChat(chatName: String otherUser: String): String
     register(username: String! email: String!, password: String!): User!
     login(email: String!, password: String!): String!
   }
@@ -45,7 +48,6 @@ const typeDefs = gql`
     email: String
     password: String
   }
-
 `;
 
 const resolvers = {
@@ -53,13 +55,17 @@ const resolvers = {
     messages: () => messages,
     
     user(parent, args, context, info) {
-      console.log(context.user)
-      return context.user.user
+      if (!context.user) {
+        throw new Error("Please log in  to view this information");
+      } else {
+        console.log(context.user)
+        return context.user.user
+      }
     }
   },
 
   Mutation: {
-    addBook(parent, args, context, info) {
+    addMessage(parent, args, context, info) {
       console.log(args.text + " " + args.author)
       var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
       var sql = `INSERT INTO user3 (name, message, sendDate) VALUES ('${args.author}', '${args.text}', '${time}')`;
@@ -82,9 +88,17 @@ const resolvers = {
 
       var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
       var sql = `INSERT INTO users (username, email, password, creationDate) VALUES ('${args.username}', '${args.email}', '${pass}', '${time}')`;
+
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Inserted");
+      });
+
+      sql = `CREATE TABLE ${args.email}(chatName VARCHAR(255), otherUser VARCHAR(255), creationDate DATETIME)`;
+
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Created");
       });
 
       console.log("Success")
@@ -100,28 +114,6 @@ const resolvers = {
     },
 
     login: async (parent, args, context) => {
-      
-     /* var sql = `SELECT COUNT(1) FROM users WHERE email = ${args.email}`
-
-      con.query(sql, function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-      }); */
-
-      var hashPass = '';
-
-      /*function get_info() {
-        con.query(`SELECT * FROM users WHERE email = '${args.email}'`, function (err, result, fields) {
-          if (err) throw err;
-          
-          bcrypt.compare(args.password, result[0].password, (error, res) => {
-            console.log('Compared result', res) 
-          })
-
-          return result[0].password
-
-        });
-      }*/
 
       var theResult = "";
 
@@ -153,6 +145,26 @@ const resolvers = {
       return token;
 
     }
+
+  },
+
+  createChat: async (parent, args, context) => {
+
+    var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    var sql = `INSERT INTO ${context.user.user} (chatName, otherUser, creationDate) VALUES ('${args.chatName}', '${args.otherUser}', '${time}')`;
+
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Inserted");
+    });
+
+    sql = `CREATE TABLE ${args.chatName}(message VARCHAR(8000), sentBy VARCHAR(255), date DATETIME)`;
+
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Inserted");
+    });
 
   }
 
