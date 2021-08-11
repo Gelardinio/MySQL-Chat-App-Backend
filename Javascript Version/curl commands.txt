@@ -1,0 +1,22 @@
+curl --request POST \
+    --header 'authentication: bruh' \
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"mutation {\n  register(username: \"el\", email:\"gerald2@gerald.ca\", password: \"bruh\")\n}","variables":"{\r\n}"}'
+
+curl --request POST \
+    --header 'authentication: bruh' \
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"mutation {\n  login(email:\"gerald2@gerald.ca\", password: \"bruh\")\n}","variables":"{\r\n}"}'
+
+curl --request POST \
+    --header 'authentication: bruh' \
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"mutation {\n  createChat(chatName:\"elr\", otherUser: \"bruhs\")\n}","variables":"{\r\n}"}'
+
+curl --request POST \
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"mutation {\n  register(username: \"elr\", email: \"gerald3@gerald.ca\", password: \"bruh\") {\n    username,\n    email,\n    password\n  }\n}","variables":"{\r\n}"}'

@@ -1,5 +1,4 @@
 curl --request POST \
-    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZ2VyYWxkQGdlcmFsZC5jYSIsImlhdCI6MTYyODM0MjMzOSwiZXhwIjoxNjI4NDI4NzM5fQ.1bLx2fJcIucRZpLXTxBjstELYiz-hb4uxpvpgHqKwzE' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
-    --data '{"query":"query Query {\n  user\n}","variables":"{\r\n}"}'
+    --data '{"query":"mutation {\n  register(username: \"elr\", email: \"gerald3@gerald.ca\", password: \"bruh\") {\n    username,\n    email,\n    password\n  }\n}","variables":"{\r\n}"}'

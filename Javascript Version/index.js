@@ -14,6 +14,8 @@ var con = mysql.createConnection({
   database: "mydb"
 });
 
+const SECRET = "98ASD908Gjfal93gn398!?44345";
+
 const typeDefs = gql`
 
   type Message {
@@ -36,8 +38,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addMessage(text: String, author: String): Message
-    getMessage(table: String): MessageList
+    addMessage(text: String, chatName: String): Message
+    getMessage(chatName: String): MessageList
     createChat(chatName: String otherUser: String): String
     register(username: String! email: String!, password: String!): User!
     login(email: String!, password: String!): String!
@@ -65,10 +67,12 @@ const resolvers = {
   },
 
   Mutation: {
+
     addMessage(parent, args, context, info) {
-      console.log(args.text + " " + args.author)
+      console.log(args.text)
       var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      var sql = `INSERT INTO user3 (name, message, sendDate) VALUES ('${args.author}', '${args.text}', '${time}')`;
+      var sql = `INSERT INTO ${args.chatName}(message, sentBy, date) VALUES ('${args.text}', '${context.user.user}', '${time}')`;
+      
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Inserted");
@@ -144,28 +148,33 @@ const resolvers = {
 
       return token;
 
-    }
-
   },
 
-  createChat: async (parent, args, context) => {
+    createChat: async (parent, args, context) => {
 
-    var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      if (!context.user) {
+        throw new Error("Please log in  to view this information");
+      } else {
 
-    var sql = `INSERT INTO ${context.user.user} (chatName, otherUser, creationDate) VALUES ('${args.chatName}', '${args.otherUser}', '${time}')`;
+        var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    con.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("Inserted");
-    });
+        var sql = `INSERT INTO ${context.user.user} (chatName, otherUser, creationDate) VALUES ('${args.chatName}', '${args.otherUser}', '${time}')`;
 
-    sql = `CREATE TABLE ${args.chatName}(message VARCHAR(8000), sentBy VARCHAR(255), date DATETIME)`;
+        con.query(sql, function (err, result) {
+          if (err) throw err;
+          console.log("Inserted");
+        });
 
-    con.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("Inserted");
-    });
+        sql = `CREATE TABLE ${args.chatName}(message VARCHAR(8000), sentBy VARCHAR(255), date DATETIME)`;
 
+        con.query(sql, function (err, result) {
+          if (err) throw err;
+          console.log("Inserted");
+        });
+
+        return time;
+      } 
+    }
   }
 
 };
