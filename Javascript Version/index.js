@@ -88,9 +88,19 @@ const resolvers = {
 
     register: async (parent, args) => {
 
+     /* var sql = `SELECT * FROM users WHERE username = '${args.username}'`
+
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+        if (result == null) {
+          console.log("BRUHHHHHJ")
+        }
+      });*/
+
       pass = await bcrypt.hash(args.password, 12);
 
       var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
       var sql = `INSERT INTO users (username, email, password, creationDate) VALUES ('${args.username}', '${args.email}', '${pass}', '${time}')`;
 
       con.query(sql, function (err, result) {
@@ -98,7 +108,9 @@ const resolvers = {
         console.log("Inserted");
       });
 
-      sql = `CREATE TABLE ${args.email}(chatName VARCHAR(255), otherUser VARCHAR(255), creationDate DATETIME)`;
+      //var sql = `CREATE TABLE ${args.email}(chatName VARCHAR(255), otherUser VARCHAR(255), creationDate DATETIME)`;
+
+      var sql = `CREATE TABLE ${args.username}(chatName VARCHAR(255), otherUser VARCHAR(255), creationDate DATETIME)`;
 
       con.query(sql, function (err, result) {
         if (err) throw err;
