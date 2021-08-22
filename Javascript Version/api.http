@@ -1,4 +1,4 @@
 curl --request POST \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
-    --data '{"query":"mutation {\n  register(username: \"Geraldsdasdfs\", email: \"gerald12345@gerald.ca\", password: \"bruh\") {\n    username,\n    email,\n    password\n  }\n}","variables":"{\r\n}"}'
+    --data '{"query":"mutation {\n  register(username: \"Geraldsdasdsdffssssfdfs\", email: \"gerald12345@gerald.ca\", password: \"bruh\") {\n    username,\n    email,\n    password\n  }\n}","variables":"{\r\n}"}'

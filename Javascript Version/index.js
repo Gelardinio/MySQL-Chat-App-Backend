@@ -88,14 +88,20 @@ const resolvers = {
 
     register: async (parent, args) => {
 
-     /* var sql = `SELECT * FROM users WHERE username = '${args.username}'`
+      var sql = `SELECT * FROM users WHERE username = '${args.username}'`
 
-      con.query(sql, function (err, result) {
-        if (err) throw err;
-        if (result == null) {
-          console.log("BRUHHHHHJ")
-        }
-      });*/
+      var theResult = 0;
+
+      async function checkValid(username) {
+        const result = await con.promise().query(`SELECT * FROM users WHERE username = '${username}'`)
+        return result[0]
+      }
+
+      theResult = await checkValid(args.username)
+
+      if (theResult.length > 0) {
+        throw new Error("Not valid")
+      }
 
       pass = await bcrypt.hash(args.password, 12);
 
