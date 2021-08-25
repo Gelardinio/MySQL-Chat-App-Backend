@@ -72,7 +72,7 @@ const resolvers = {
           var singleMessage = {
             message: colMessages[0][i].message,
             sentBy: colMessages[0][i].sentBy,
-            sentDate: String(colMessages[0][i].date)
+            sendDate: colMessages[0][i].date
           }
           collection.push(singleMessage)
       }
