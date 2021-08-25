@@ -19,30 +19,21 @@ const SECRET = "98ASD908Gjfal93gn398!?44345";
 const typeDefs = gql`
 
   type Message {
-    text: String
-    author: Author
-  }
-
-  type Author {
-    name: String
-  }
-
-  type MessageList {
-    table: String
+    message: String!
+    sentBy: String!
+    sendDate: String!
   }
 
   type Query {
-    messages: [Message]
-    authors: [Author]
     user: String
+    getMessage(chatName: String): [Message]
   }
 
   type Mutation {
     addMessage(text: String, chatName: String): Message
-    getMessage(chatName: String): MessageList
     createChat(chatName: String otherUser: String): String
     register(username: String! email: String!, password: String!): User!
-    login(email: String!, password: String!): String!
+    login(username: String!, password: String!): String!
   }
 
   type User {
@@ -54,7 +45,6 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    messages: () => messages,
     
     user(parent, args, context, info) {
       if (!context.user) {
@@ -63,7 +53,33 @@ const resolvers = {
         console.log(context.user)
         return context.user.user
       }
-    }
+    }, 
+
+    getMessage: async (parent, args, context, info) => {
+
+      async function getMessages(table) {
+        const result = await con.promise().query(`SELECT * FROM ${table}`)
+        return result
+      }
+
+      var colMessages = await getMessages(args.chatName);
+
+      console.log(colMessages[0][0].date)
+
+      var collection = []
+
+      for (var i = 0; i < colMessages.length; i++) {
+          var singleMessage = {
+            message: colMessages[0][i].message,
+            sentBy: colMessages[0][i].sentBy,
+            sentDate: String(colMessages[0][i].date)
+          }
+          collection.push(singleMessage)
+      }
+      console.log(collection)
+      return collection
+    },
+
   },
 
   Mutation: {
@@ -77,13 +93,14 @@ const resolvers = {
         if (err) throw err;
         console.log("Inserted");
       });
-    },
 
-    getMessage(parent, args, context, info) {
-      con.query(`SELECT * FROM ${args.table}`, function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-      });  
+      const createdMessage = {
+        message: args.text,
+        sentBy: context.user.user,
+        sendDate: time
+      }
+
+      return createdMessage
     },
 
     register: async (parent, args) => {
@@ -92,15 +109,15 @@ const resolvers = {
 
       var theResult = 0;
 
-      async function checkValid(username) {
-        const result = await con.promise().query(`SELECT * FROM users WHERE username = '${username}'`)
+      async function checkValid(username, email) {
+        const result = await con.promise().query("SELECT * FROM users WHERE username=? OR email=?", [ username, email ])
         return result[0]
       }
 
-      theResult = await checkValid(args.username)
+      theResult = await checkValid(args.username, args.email)
 
       if (theResult.length > 0) {
-        throw new Error("Not valid")
+        throw new Error("Username or/and email already exists")
       }
 
       pass = await bcrypt.hash(args.password, 12);
@@ -139,24 +156,28 @@ const resolvers = {
 
       var theResult = "";
 
-      async function get_info(email) {
-        const results = await con.promise().query(`SELECT * FROM users WHERE email = '${email}'`)
-        return results[0][0].password
+      async function get_info(username) {
+        const results = await con.promise().query(`SELECT * FROM users WHERE username = '${username}'`)
+        return results
+        //return results[0]
       }
 
-      theResult = await get_info(args.email)
 
-      const isValid = await bcrypt.compare(args.password, theResult);
+      theResult = await get_info(args.username)
+
+      if (theResult[0].length < 1) {
+        throw new Error("Invalid username");
+      }
+
+      const isValid = await bcrypt.compare(args.password, theResult[0][0].password);
 
       if (!isValid) {
         throw new Error("Incorrect password");
       }
 
-      console.log(theResult)
-
       const token = await jwt.sign(
         {
-          user: args.email
+          user: args.username
         },
         SECRET,
         {expiresIn: "1h" }
@@ -166,7 +187,7 @@ const resolvers = {
 
       return token;
 
-  },
+    },
 
     createChat: async (parent, args, context) => {
 
@@ -175,6 +196,8 @@ const resolvers = {
       } else {
 
         var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        console.log(context.user.user + "BRUGH")
 
         var sql = `INSERT INTO ${context.user.user} (chatName, otherUser, creationDate) VALUES ('${args.chatName}', '${args.otherUser}', '${time}')`;
 

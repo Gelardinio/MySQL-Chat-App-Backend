@@ -1,11 +1,4 @@
-var mysql = require('mysql');
-
-export const conToExport = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Qawsedrf01!",
-  database: "mydb"
-});
+var mysql = require('mysql2');
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -17,7 +10,7 @@ var con = mysql.createConnection({
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    deleteUserTable();
+    printTable(users);
 });
 
 createMessageTable = () => {

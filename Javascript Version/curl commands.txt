@@ -2,21 +2,35 @@ curl --request POST \
     --header 'authentication: bruh' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
-    --data '{"query":"mutation {\n  register(username: \"el\", email:\"gerald2@gerald.ca\", password: \"bruh\")\n}","variables":"{\r\n}"}'
+    --data '{"query":"mutation RegisterMutation($registerUsername: String!, $registerEmail: String!, $registerPassword: String!) {\n  register(username: $registerUsername, email: $registerEmail, password: $registerPassword) {\n    username\n    email\n    password\n  }\n}","variables":"{\r\n  \"registerUsername\": \"Gelardinio\",\r\n  \"registerEmail\": \"Gelardinio@gmail.com\",\r\n  \"registerPassword\": \"tempPass\"\r\n}"}'
 
 curl --request POST \
     --header 'authentication: bruh' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
-    --data '{"query":"mutation {\n  login(email:\"gerald2@gerald.ca\", password: \"bruh\")\n}","variables":"{\r\n}"}'
+    --data '{"query":"mutation Mutation($loginUsername: String!, $loginPassword: String!) {\n  login(username: $loginUsername, password: $loginPassword)\n}","variables":"{\r\n  \"loginUsername\": \"Gelardinio\",\r\n  \"loginPassword\": \"tempPass\"\r\n}"}'
 
 curl --request POST \
-    --header 'authentication: bruh' \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTgxMzUxNSwiZXhwIjoxNjI5ODE3MTE1fQ.hKFKGqVsXhm53UT_FjkI1A71GMxEfqSvf0YwR7ol3Js' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
-    --data '{"query":"mutation {\n  createChat(chatName:\"elr\", otherUser: \"bruhs\")\n}","variables":"{\r\n}"}'
+    --data '{"query":"query Query {\n  user\n}","variables":"{\r\n}"}'
 
 curl --request POST \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTgxMzUxNSwiZXhwIjoxNjI5ODE3MTE1fQ.hKFKGqVsXhm53UT_FjkI1A71GMxEfqSvf0YwR7ol3Js' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
-    --data '{"query":"mutation {\n  register(username: \"elr\", email: \"gerald3@gerald.ca\", password: \"bruh\") {\n    username,\n    email,\n    password\n  }\n}","variables":"{\r\n}"}'
+    --data '{"query":"mutation CreateChatMutation($createChatChatName: String, $createChatOtherUser: String) {\n  createChat(chatName: $createChatChatName, otherUser: $createChatOtherUser)\n}","variables":"{\r\n  \"createChatChatName\": \"FirstChat\",\r\n  \"createChatOtherUser\": \"Emet\"\r\n}"}'
+
+curl --request POST \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTgxMzUxNSwiZXhwIjoxNjI5ODE3MTE1fQ.hKFKGqVsXhm53UT_FjkI1A71GMxEfqSvf0YwR7ol3Js' \
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"mutation AddMessageMutation($addMessageText: String, $addMessageChatName: String) {\n  addMessage(text: $addMessageText, chatName: $addMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"addMessageText\": \"This is a test message\",\r\n  \"addMessageChatName\": \"FirstChat\"\r\n\r\n}"}'
+
+curl --request POST \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTg1MzYyOCwiZXhwIjoxNjI5ODU3MjI4fQ.JQcqg8rqi9USv6OjghuCEHkOYEmoVwglkBj5q6Oifp4' \
+    --header 'content-type: application/json' \
+    --url http://localhost:4000/ \
+    --data '{"query":"query Query($getMessageChatName: String) {\n  getMessage(chatName: $getMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"getMessageChatName\": \"FirstChat\"\r\n}"}'
+
