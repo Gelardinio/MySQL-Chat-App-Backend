@@ -11,7 +11,7 @@ curl --request POST \
     --data '{"query":"mutation Mutation($loginUsername: String!, $loginPassword: String!) {\n  login(username: $loginUsername, password: $loginPassword)\n}","variables":"{\r\n  \"loginUsername\": \"Gelardinio\",\r\n  \"loginPassword\": \"tempPass\"\r\n}"}'
 
 curl --request POST \
-    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTgxMzUxNSwiZXhwIjoxNjI5ODE3MTE1fQ.hKFKGqVsXhm53UT_FjkI1A71GMxEfqSvf0YwR7ol3Js' \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTkxNjA4MCwiZXhwIjoxNjI5OTE5NjgwfQ.p_bzD9zOrTDRB9iTHDFosJ8eIXNnJ0oqJy7h520bVUI' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
     --data '{"query":"query Query {\n  user\n}","variables":"{\r\n}"}'
@@ -29,7 +29,7 @@ curl --request POST \
     --data '{"query":"mutation AddMessageMutation($addMessageText: String, $addMessageChatName: String) {\n  addMessage(text: $addMessageText, chatName: $addMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"addMessageText\": \"This is a test message\",\r\n  \"addMessageChatName\": \"FirstChat\"\r\n\r\n}"}'
 
 curl --request POST \
-    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTg5OTY2MSwiZXhwIjoxNjI5OTAzMjYxfQ.gHDm6XKn3UZ968pomzbtcFJTZMckRWORo2dffSgTB4g' \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiRG9uYWxkIiwiaWF0IjoxNjI5OTE2ODcxLCJleHAiOjE2Mjk5MjA0NzF9.qJXI2cv8hy-95IaVru7E6alfkkAxbld33F8uy_dscbk' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
     --data '{"query":"query Query($getMessageChatName: String) {\n  getMessage(chatName: $getMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"getMessageChatName\": \"FirstChat\"\r\n}"}'

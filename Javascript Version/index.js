@@ -48,36 +48,57 @@ const resolvers = {
     
     user(parent, args, context, info) {
       if (!context.user) {
-        throw new Error("Please log in  to view this information");
+        throw new Error("Please log in to view this information");
       } else {
-        console.log(context.user)
+        console.log(context.user.user)
         return context.user.user
       }
     }, 
 
     getMessage: async (parent, args, context, info) => {
 
-      async function getMessages(table) {
-        const result = await con.promise().query(`SELECT * FROM ${table}`)
-        return result
-      }
+      /*async function checkValid(username, email) {
+        const result = await con.promise().query("SELECT * FROM users WHERE username=? OR email=?", [ username, email ])
+        return result[0]
+      }*/
 
-      var colMessages = await getMessages(args.chatName);
 
-      console.log(colMessages[0][0].date)
+      if (!context.user) {
+        throw new Error("Please log in to view this information");
+      } else {
+        async function checkIfAllowed(table) {
+          const result = await con.promise().query(`SELECT * FROM ${context.user.user} WHERE chatName=?`, [table])
+          return result[0]
+        }
 
-      var collection = []
+        var theResult = await checkIfAllowed(args.chatName);
 
-      for (var i = 0; i < colMessages.length; i++) {
-          var singleMessage = {
-            message: colMessages[0][i].message,
-            sentBy: colMessages[0][i].sentBy,
-            sendDate: colMessages[0][i].date
+        if (theResult.length < 1) {
+            throw new Error("You cannot access this information");
+        } else {
+          async function getMessages(table) {
+            const result = await con.promise().query(`SELECT * FROM ${table}`)
+            return result
           }
-          collection.push(singleMessage)
+    
+          var colMessages = await getMessages(args.chatName);
+    
+          console.log(colMessages[0][0].date)
+    
+          var collection = []
+    
+          for (var i = 0; i < colMessages.length; i++) {
+              var singleMessage = {
+                message: colMessages[0][i].message,
+                sentBy: colMessages[0][i].sentBy,
+                sendDate: colMessages[0][i].date
+              }
+              collection.push(singleMessage)
+          }
+          console.log(collection)
+          return collection
+        }
       }
-      console.log(collection)
-      return collection
     },
 
   },

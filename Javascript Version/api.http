@@ -1,5 +1,5 @@
 curl --request POST \
-    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTg5OTY2MSwiZXhwIjoxNjI5OTAzMjYxfQ.gHDm6XKn3UZ968pomzbtcFJTZMckRWORo2dffSgTB4g' \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiRG9uYWxkIiwiaWF0IjoxNjI5OTE2ODcxLCJleHAiOjE2Mjk5MjA0NzF9.qJXI2cv8hy-95IaVru7E6alfkkAxbld33F8uy_dscbk' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
     --data '{"query":"query Query($getMessageChatName: String) {\n  getMessage(chatName: $getMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"getMessageChatName\": \"FirstChat\"\r\n}"}'
