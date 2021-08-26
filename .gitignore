@@ -1,2 +1,7 @@
 node_modules/
 package-lock.json
+api.http
+.vs/
+.vscode/
+curl commands.txt
+tempCodeRunnerFile.js
