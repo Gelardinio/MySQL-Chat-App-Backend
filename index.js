@@ -10,11 +10,11 @@ var jwt = require('jsonwebtoken')
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Qawsedrf01!",
+  password: "",
   database: "mydb"
 });
 
-const SECRET = "98ASD908Gjfal93gn398!?44345";
+const SECRET = "";
 
 const typeDefs = gql`
 
