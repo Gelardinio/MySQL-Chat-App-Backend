@@ -23,13 +23,13 @@ curl --request POST \
     --data '{"query":"mutation CreateChatMutation($createChatChatName: String, $createChatOtherUser: String) {\n  createChat(chatName: $createChatChatName, otherUser: $createChatOtherUser)\n}","variables":"{\r\n  \"createChatChatName\": \"FirstChat\",\r\n  \"createChatOtherUser\": \"Emet\"\r\n}"}'
 
 curl --request POST \
-    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTg1MzYyOCwiZXhwIjoxNjI5ODU3MjI4fQ.JQcqg8rqi9USv6OjghuCEHkOYEmoVwglkBj5q6Oifp4' \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTkzNTMwNCwiZXhwIjoxNjI5OTM4OTA0fQ.f751AKqJVvx-PvWdVdpHmeYD2pReJFfW8uT2I2L86l8' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
     --data '{"query":"mutation AddMessageMutation($addMessageText: String, $addMessageChatName: String) {\n  addMessage(text: $addMessageText, chatName: $addMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"addMessageText\": \"This is a test message\",\r\n  \"addMessageChatName\": \"FirstChat\"\r\n\r\n}"}'
 
 curl --request POST \
-    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiRG9uYWxkIiwiaWF0IjoxNjI5OTE2ODcxLCJleHAiOjE2Mjk5MjA0NzF9.qJXI2cv8hy-95IaVru7E6alfkkAxbld33F8uy_dscbk' \
+    --header 'authentication: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiR2VsYXJkaW5pbyIsImlhdCI6MTYyOTkzNTMwNCwiZXhwIjoxNjI5OTM4OTA0fQ.f751AKqJVvx-PvWdVdpHmeYD2pReJFfW8uT2I2L86l8' \
     --header 'content-type: application/json' \
     --url http://localhost:4000/ \
     --data '{"query":"query Query($getMessageChatName: String) {\n  getMessage(chatName: $getMessageChatName) {\n    message\n    sentBy\n    sendDate\n  }\n}","variables":"{\r\n  \"getMessageChatName\": \"FirstChat\"\r\n}"}'

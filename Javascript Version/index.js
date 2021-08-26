@@ -83,11 +83,10 @@ const resolvers = {
     
           var colMessages = await getMessages(args.chatName);
     
-          console.log(colMessages[0][0].date)
     
           var collection = []
     
-          for (var i = 0; i < colMessages.length; i++) {
+          for (var i = 0; i < colMessages[0].length; i++) {
               var singleMessage = {
                 message: colMessages[0][i].message,
                 sentBy: colMessages[0][i].sentBy,
@@ -105,23 +104,40 @@ const resolvers = {
 
   Mutation: {
 
-    addMessage(parent, args, context, info) {
-      console.log(args.text)
-      var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      var sql = `INSERT INTO ${args.chatName}(message, sentBy, date) VALUES ('${args.text}', '${context.user.user}', '${time}')`;
-      
-      con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("Inserted");
-      });
+    addMessage: async (parent, args, context, info) => {
 
-      const createdMessage = {
-        message: args.text,
-        sentBy: context.user.user,
-        sendDate: time
+      if (!context.user) {
+        throw new Error("Please log in to view this information");
+      } else {
+        async function checkIfAllowed(table) {
+          const result = await con.promise().query(`SELECT * FROM ${context.user.user} WHERE chatName=?`, [table])
+          return result[0]
+        }
+
+        var theResult = await checkIfAllowed(args.chatName);
+
+        if (theResult.length < 1) {
+            throw new Error("You cannot access this information");
+        } else {
+          console.log(args.text)
+          var time = new Date().toISOString().slice(0, 19).replace('T', ' ');
+          var sql = `INSERT INTO ${args.chatName}(message, sentBy, date) VALUES ('${args.text}', '${context.user.user}', '${time}')`;
+          
+          con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("Inserted");
+          });
+    
+          const createdMessage = {
+            message: args.text,
+            sentBy: context.user.user,
+            sendDate: time
+          }
+    
+          return createdMessage
+        }
       }
 
-      return createdMessage
     },
 
     register: async (parent, args) => {
