@@ -6,8 +6,9 @@ const { ApolloServer, gql } = require('apollo-server');
 var mysql = require('mysql2');
 var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
+//var dotenv = require('dotenv');
 
-var con = mysql.createConnection({
+const con = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
