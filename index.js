@@ -8,13 +8,13 @@ var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "mydb"
+  host: process.env.SECRET,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
 });
 
-const SECRET = "";
+const SECRET = process.env.SECRET;
 
 const typeDefs = gql`
 
@@ -280,7 +280,10 @@ const server = new ApolloServer({
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  server.listen().then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
+  server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    console.log(`
+      🚀  Server is ready at ${url}
+      📭  Query at https://studio.apollographql.com/dev
+    `);
   });
 });
