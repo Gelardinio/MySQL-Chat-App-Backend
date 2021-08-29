@@ -8,7 +8,7 @@ var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
 
 var con = mysql.createConnection({
-  host: process.env.SECRET,
+  host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE
