@@ -8,7 +8,9 @@ var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
 //var dotenv = require('dotenv');
 
-const con = mysql.createConnection({
+//dotenv.config();
+
+var con = mysql.createPool({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
@@ -278,7 +280,7 @@ const server = new ApolloServer({
   }
 });
 
-con.connect(function(err) {
+con.getConnection(function(err) {
   if (err) throw err;
   console.log("Connected!");
   server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
